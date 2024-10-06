@@ -13,6 +13,9 @@ const WebcamCapture = () => {
 	const [isStreaming, setIsStreaming] = useState(false);
 	const [rtmpUrl, setRtmpUrl] = useState("");
 	const [status, setStatus] = useState("Idle");
+	const [facingMode, setFacingMode] = useState("user");
+	const [streamName, setStreamName] = useState("testing");
+
 	useEffect(() => {
 		// Connect to the NestJS WebSocket server
 		socketRef.current = io("https://elects.space/", {
@@ -44,8 +47,22 @@ const WebcamCapture = () => {
 	const startStream = async (rtmpUrl) => {
 		try {
 			const stream = await navigator.mediaDevices.getUserMedia({
-				video: true,
+				video: {
+					width: {
+						min: 1280,
+						ideal: 1920,
+						max: 1920,
+					  },
+					  height: {
+						  min: 720,
+						ideal: 1080,
+						max: 1080
+					  }
+				},
 				audio: true,
+				facingMode: {
+					exact: facingMode
+				}
 			});
 			if (videoRef.current) {
 				videoRef.current.srcObject = stream;
@@ -108,9 +125,15 @@ const WebcamCapture = () => {
 				const streamKey = `rtmps://broadcast.api.video:1936/s/${JSON.parse(existingStream).streamKey}`;
 				return startStream(streamKey);
 			}
-
+			console.log(streamName)
 			const request = await fetch("https://elects.space/create-stream", {
 				method: "POST",
+				headers: {
+					'Content-Type': 'application/json',
+				  },
+				  body: JSON.stringify({
+					name: streamName,
+				  }),
 			});
 			const res = await request.json();
 
@@ -135,20 +158,20 @@ const WebcamCapture = () => {
 			`https://elects.space/watch/${streamData.liveStreamId}`,
 		);
 	};
+	
+	const switchCamera = () => {
+		const camera = facingMode === "user" ? "environment" : "user";
+		setFacingMode(camera);
+	};
 
 	return (
 		<div>
-			{capturedImage ? (
-				<>
-					<PreviewImg src={capturedImage} className="captured-image" />
-					<WebcamButton onClick={resetState}>Reset</WebcamButton>
-				</>
-			) : (
-				<>
+				<button onClick={switchCamera}>Switch Camera</button>
 					<video ref={videoRef} autoPlay muted />
 					<canvas ref={canvasRef} />
 					{!isStreaming ? (
 						<div style={{ display: "grid", gap: "1em" }}>
+							<input type="text" placeholder="streamName" value={streamName} onChange={(e) => setStreamName(e.target.value)} />
 							<button onClick={createVideoStream}>Start Streaming</button>
 						</div>
 					) : (
@@ -157,8 +180,6 @@ const WebcamCapture = () => {
 							<button onClick={stopStream}>Stop Streaming</button>
 						</>
 					)}
-				</>
-			)}
 		</div>
 	);
 };

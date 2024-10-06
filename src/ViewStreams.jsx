@@ -5,7 +5,7 @@ const ViewStreams = () => {
 
 	const fetchStreams = async () => {
 		try {
-			const request = await fetch("https://elects.space//streams");
+			const request = await fetch("https://elects.space/streams");
 			const res = await request.json();
 			setStreams(res.data);
 		} catch (err) {
