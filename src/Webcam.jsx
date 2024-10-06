@@ -108,7 +108,7 @@ const WebcamCapture = () => {
 				return startStream(streamKey);
 			}
 
-			const request = await fetch("https://elects.space//create-stream", {
+			const request = await fetch("https://elects.space/create-stream", {
 				method: "POST",
 			});
 			const res = await request.json();
