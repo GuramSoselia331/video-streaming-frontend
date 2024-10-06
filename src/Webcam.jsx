@@ -115,7 +115,7 @@ const WebcamCapture = () => {
 			const res = await request.json();
 
 			localStorage.setItem("stream_data", JSON.stringify(res));
-			const streamKey = `rtmp://broadcast.api.video/s/${res.streamKey}`;
+			const streamKey = `rtmps://broadcast.api.video:1936/s/${res.streamKey}`;
 			startStream(streamKey);
 		} catch (err) {
 			console.log("Could not create stream api.video error", err);
