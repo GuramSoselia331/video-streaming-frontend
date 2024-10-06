@@ -1,7 +1,5 @@
 import { useRef, useState, useEffect } from "react";
 import { io } from "socket.io-client";
-import PlaySvg from "./assets/play.svg";
-import PauseSvg from "./assets/pause.svg";
 import "./App.css";
 const WebcamCapture = () => {
   const videoRef = useRef(null);
