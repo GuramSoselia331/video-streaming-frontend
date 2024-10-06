@@ -105,7 +105,7 @@ const WebcamCapture = () => {
 			const existingStream = localStorage.getItem("stream_data");
 
 			if (existingStream) {
-				const streamKey = `rtmp://broadcast.api.video/s/${JSON.parse(existingStream).streamKey}`;
+				const streamKey = `rtmps://broadcast.api.video:1936/s/${JSON.parse(existingStream).streamKey}`;
 				return startStream(streamKey);
 			}
 
