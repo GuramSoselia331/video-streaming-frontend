@@ -149,10 +149,12 @@ const WebcamCapture = () => {
 					{!isStreaming ? (
 						<div style={{ display: "grid", gap: "1em" }}>
 							<button onClick={createVideoStream}>Start Streaming</button>
-							<button onClick={createVideoStream}>Copy Stream URL</button>
 						</div>
 					) : (
-						<button onClick={stopStream}>Stop Streaming</button>
+						<>
+							<button onClick={copyStreamUrl}>Copy Stream URL</button>
+							<button onClick={stopStream}>Stop Streaming</button>
+						</>
 					)}
 				</>
 			)}
