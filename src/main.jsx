@@ -6,22 +6,22 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ViewStreams from "./ViewStreams.jsx";
 const router = createBrowserRouter([
-	{
-		path: "/",
-		element: <App />,
-	},
-	{
-		path: "/watch/:streamid",
-		element: <Player />,
-	},
-	{
-		path: "/streams",
-		element: <ViewStreams />,
-	},
+  {
+    path: "/",
+    element: <App />,
+  },
+  {
+    path: "/watch/:streamid",
+    element: <Player />,
+  },
+  {
+    path: "/streams",
+    element: <ViewStreams />,
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(
-	<StrictMode>
-		<RouterProvider router={router} />
-	</StrictMode>,
+  <StrictMode>
+    <RouterProvider router={router} />
+  </StrictMode>
 );
