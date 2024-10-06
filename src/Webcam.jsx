@@ -20,6 +20,7 @@ const WebcamCapture = () => {
 				framespersecond: 30,
 				audioBitrate: 44100,
 			},
+			transports: ["websocket"],
 		});
 
 		socketRef.current.on("message", (msg) => {

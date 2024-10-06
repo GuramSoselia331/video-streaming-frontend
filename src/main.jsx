@@ -11,7 +11,7 @@ const router = createBrowserRouter([
 		element: <App />,
 	},
 	{
-		path: "/play",
+		path: "/watch/:streamid",
 		element: <Player />,
 	},
 	{
