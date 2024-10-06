@@ -129,6 +129,7 @@ const WebcamCapture = () => {
 	};
 
 	const copyStreamUrl = () => {
+		const existingStream = localStorage.getItem("stream_data");
 		const streamData = JSON.parse(existingStream);
 		navigator.clipboard.writeText(
 			`https://elects.space/watch/${streamData.liveStreamId}`,
