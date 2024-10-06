@@ -15,7 +15,7 @@ const WebcamCapture = () => {
 	const [status, setStatus] = useState("Idle");
 	useEffect(() => {
 		// Connect to the NestJS WebSocket server
-		socketRef.current = io("http://localhost:8080", {
+		socketRef.current = io("https://elects.space/", {
 			query: {
 				framespersecond: 30,
 				audioBitrate: 44100,
@@ -108,7 +108,7 @@ const WebcamCapture = () => {
 				return startStream(streamKey);
 			}
 
-			const request = await fetch("http://localhost:8080/create-stream", {
+			const request = await fetch("https://elects.space//create-stream", {
 				method: "POST",
 			});
 			const res = await request.json();
