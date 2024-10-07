@@ -103,19 +103,41 @@ const WebcamCapture = () => {
 
       const options = {
         mimeType: "video/webm;codecs=h264",
-        videoBitsPerSecond: 1000000,
+        videoBitsPerSecond: 2500000,    // Increased for better quality
+        audioBitsPerSecond: 128000,     // Added audio bitrate
+        videoFrameRate: 30,     
       };
+
+      // Check browser support
+if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+  console.error("Codec not supported");
+  // Fallback options
+  options.mimeType = "video/webm;codecs=vp8";
+}
 
       mediaRecorderRef.current = new MediaRecorder(stream, options);
 
-      mediaRecorderRef.current.ondataavailable = (event) => {
-        if (event.data.size > 0 && socketRef.current) {
-          socketRef.current.emit("binarystream", event.data);
-        }
-      };
+    
+// Buffer to accumulate chunks
+let chunks = [];
+
+mediaRecorderRef.current.ondataavailable = (event) => {
+  if (event.data.size > 0) {
+    chunks.push(event.data);
+    
+    // Send data when buffer reaches certain size
+    if (chunks.length >= 5) {
+      const blob = new Blob(chunks, { type: 'video/webm' });
+      if (socketRef.current && socketRef.current.connected) {
+        socketRef.current.emit("binarystream", blob);
+      }
+      chunks = []; // Clear buffer
+    }
+  }
+};
 
       socketRef.current.emit("start");
-      mediaRecorderRef.current.start(1000);
+      mediaRecorderRef.current.start(200);
       setIsStreaming(true);
       setStatus("Streaming");
       setMediaStream(stream);
